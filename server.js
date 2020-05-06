@@ -20,12 +20,18 @@ app.get("/notes", (req, res) => {
 
 
 app.get("/api/notes", (req, res) => {
-  res.json(noteDatabase.getDatabase())
+  res.json(noteDatabase.getNotes())
 })
 
 app.post("/api/notes", function(req, res) {
   const note = req.body
+  noteDatabase.addNote(note)
+  res.json({result: "success"})
+})
 
+app.delete("/api/notes/:id", (req, res) => {
+  const id = req.params.id
+  noteDatabase.removeNote(id)
   res.json({result: "success"})
 })
 
@@ -34,8 +40,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/index.html"))
 })
 
-
 app.listen(PORT, function() {
   console.log("App listening on PORT " + PORT)
-
 })
