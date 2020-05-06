@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "resetDatabase": "cp ./db/db.default.json ./db/db.json"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +13,5 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security"
   },
-  "devDependencies": {
-    "jest": "^25.5.2"
-  }
+  "devDependencies": {}
 }

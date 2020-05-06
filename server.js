@@ -1,30 +1,41 @@
 const
+  NoteDatabase = require("./NoteDatabase"),
   express = require("express"),
-  fs = require("fs")
+  path = require("path")
 
 const
   app = express(),
   PORT = 8080
 
+const noteDatabase = new NoteDatabase()
+
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use(express.static('public'))
+
 app.get("/notes", (req, res) => {
-  const path = __dirname + "/public/notes.html"
-  fs.readFile(path, (error, data) => {
-    writePage(res, data)
-  })
+  res.sendFile(path.join(__dirname, "/public/notes.html"))
 })
+
+
+app.get("/api/notes", (req, res) => {
+  res.json(noteDatabase.getDatabase())
+})
+
+app.post("/api/notes", function(req, res) {
+  const note = req.body
+
+  res.json({result: "success"})
+})
+
 
 app.get("*", (req, res) => {
-  const path = __dirname + "/public/index.html"
-  fs.readFile(path, (error, data) => {
-    writePage(res, data)
-  })
+  res.sendFile(path.join(__dirname, "/public/index.html"))
 })
 
-app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
-});
 
-function writePage(response, data, statusCode = 200) {
-  response.writeHead(statusCode, { "Content-Type": "text/html" });
-  response.end(data);
-}
+app.listen(PORT, function() {
+  console.log("App listening on PORT " + PORT)
+
+})
